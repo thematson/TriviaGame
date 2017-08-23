@@ -1,0 +1,122 @@
+body {
+    background-image: url("../images/cruisewp.jpg");
+	background-repeat: repeat-y;
+	background-size: 100%;
+	background-image-height: 100%;
+}
+
+#overlay {
+ 	position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    /*background-position: right;
+	background-image: url("../images/cruisecover.jpg");
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	display: block;*/
+	z-index:500;
+    color: black;
+    margin: 30px auto;
+    border-radius: 15px;
+    height: 90%;
+    width: 90%;
+
+}
+
+#overlay img {
+
+	max-height: 100%;
+	max-width: 100%;
+
+	margin: auto;
+/*	width: auto;
+*/	display: block;
+
+}
+#overlay h1 {
+	float: left;
+}
+
+
+
+.jumbotron-fluid {
+	background-color: lightblue;
+	border-radius: 15px;
+	margin-top: 30px;
+	padding-top: 30px;
+	text-align: center;
+	height: 20%;
+
+
+
+}
+
+.flex-row {
+	/*background-color: lightblue;*/
+	border-radius: 15px;
+	text-align: center;
+	
+}
+
+.row {
+	background-color: lightblue;
+	border-radius: 15px;
+	text-align: center;
+	
+}
+
+.container {
+	background-color: lightblue;
+	border-radius: 15px;
+	text-align: center;
+	height: 90%;
+	width: 90%;
+	opacity: 1;
+
+}
+
+#timer {
+	height: 15%;
+}
+
+#questionrow {
+	height: 15%;
+}
+
+#answersrow {
+	height: 50%;
+}
+
+#answers {
+	background-color: lightblue;
+	border-radius: 15px;
+	text-align: center;
+	height: 100%;
+
+}
+
+#ans1,
+#ans2,
+#ans3,
+#ans4	{
+	height: 25%;
+	border-style: groove;
+	padding: 15px;
+	cursor: pointer;
+	border-radius: 15px;
+	margin: 0;
+
+}
+
+#ans1:hover,
+#ans2:hover,
+#ans3:hover,
+#ans4:hover	{
+	height: 25%;
+	border-style: ridge;
+	background-color: lightgreen;
+
+}
