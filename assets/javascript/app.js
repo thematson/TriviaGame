@@ -20,21 +20,127 @@ $(document).ready(function() {
 	{
 		question: "Cruise's character, Daniel Kaffee, was what rank in 'A Few Good Men'?",
 		ansarray: ['Major', 'Corporal', 'Colonel', 'Lieutenant']
+	},
+	{	
+		question: "In 'Top Gun', who was Cruise's training adversary?",
+		ansarray: ['Goose', 'Rainman', 'Hollywood', 'Iceman']
+	},
+	{	
+		question: "The clairvoyants in 'Minority Report' are better known as?",
+		ansarray: ['Visionaries', 'Ghosts', 'Scanners', 'Precogs']
+	},
+	{	
+		question: "What building blows up in 'Mission: Impossible - Ghost Protocol?",
+		ansarray: ['Great Pyramid', 'Buckingham Palace', 'The White House', 'The Kremiln']
 	}
+
 	];
 
-	var answerClone = $("#answercolumn").clone(true, true);
-	var yesimgArray = ["./assets/images/thunderyes.gif"];
-	var noimgArray = ["./assets/images/thunderno.gif"];
-	var round = 0;
-	var randarray = [];
-	var right = 0;
-	var wrong = 0;
+//image arrays of correct and wrong answers
+	var yesimgArray = ["./assets/images/thunderyes.gif", 
+						"./assets/images/vanillayes.gif", 
+						"./assets/images/cocktailyes.gif", 
+						"./assets/images/tropicyes.gif", 
+						"./assets/images/goodmenyes.gif", 
+						"./assets/images/topgunyes.gif", 
+						"./assets/images/reportyes.gif", 
+						"./assets/images/ghostyes.gif" ];
+	var noimgArray = ["./assets/images/thunderno.gif", 
+						"./assets/images/vanillano.gif", 
+						"./assets/images/cocktailno.gif", 
+						"./assets/images/tropicno.jpg",
+						"./assets/images/goodmenno.gif", 
+						"./assets/images/topgunno.gif",
+						"./assets/images/reportno.gif",  
+						"./assets/images/ghostno.gif" ];
+	var round = 0; //counter for each question round
+	var randarray = [];  //empty array waiting to be pushed with a random set of answers
+	var right = 0; //counts correct answers
+	var wrong = 0; //counts incorrect answers
+	var clock = 10; //the inital time for the countdown clock 10 sec per question
+	var soundtrack = new Audio('./assets/images/dangerZone.mp3') //music to get you grooving
 
-	$("#overlayimg").on("click", function() {
-		$("#overlay").remove();
-		
-	});
+	
+//initital splash screen. game starts with image clip and the music loops!!!!
+$("#overlayimg").on("click", function() {
+	soundtrack.addEventListener('ended', function() {
+	    this.currentTime = 0;
+	    this.play();
+	}, false);
+	soundtrack.play();
+//reset variables for future gameplay
+	clock = 10;
+	right = 0;
+	wrong = 0;
+	$("#overlay").hide(); //gets rid of splash screen
+	randomizearray(); //calls array to radomize answer order		
+});
+
+
+// sets the countdown interval to 1 second
+function countdown() {
+  intervalId = setInterval(timer, 1000);
+}
+
+// the actual countdown function
+function timer() {	
+	clock--; //  Decrease number by one.	
+	$("#timeleft").html("<h2> :0" + clock + "</h2>");//  Show the number in the #timeleft div.
+	if (clock === 0) { // when clock hits zero
+	stop();			   // timeer stops
+	wrongAnswer();	   // counts as a wrong answer
+	}
+}
+
+//the final screen
+function endScreen() {
+	$("#overlay").show();  // returns the overlay
+	$("#titletext").empty(); // clears initial text
+	stop();					// stops counter
+	round = 0;				//resets round count
+	randarray = [];			// clears the random array
+	if (right <= 4) {		//if user only gets 4 or less correct this happens
+		$("#overlayimg").attr('src', './assets/images/goose.jpeg'); //shows goose
+		$("#titletext").append("<h3>You got " + right + " correct!<br/><br/>"
+		 						+ "And missed " + wrong + ". You let down Goose.<br/><br/>" 
+		 						+ "Click on Goose to play again!");
+	}
+	else {					//if user breaks 5 question this happens
+		$("#overlayimg").attr('src', './assets/images/maverick.jpg')
+		$("#titletext").append("<h3>You got " + right + " correct!<br/><br/>"
+		 						+ "And missed " + wrong + ". Great job Maverick!<br/><br/>" 
+		 						+ "Click on Maverick to play again!");
+	}	
+	
+
+}
+
+function stop() {
+
+      //  Clears our intervalId
+      //  We just pass the name of the interval
+      //  to the clearInterval function.
+      clearInterval(intervalId);
+      $("#timeleft").html(":10");
+      clock = 10;
+
+    }
+
+function wrongAnswer() {
+					$("#answercolumn").html("<h3>The answer was " + 
+						trivia[round].ansarray[3] +" <br/><img src=" 
+						+ noimgArray[round] + " height='80%' max-width='100%'>");
+					wrong++;
+					console.log("wrong number " + wrong);
+					round++;
+					if (round == trivia.length) {
+					setTimeout(endScreen, 1000 * 5);	
+					}
+					else {
+					setTimeout(randomizearray, 1000 * 5);
+					}
+					
+				}				
 
 function randomizearray() {
 		randarray = [];
@@ -62,35 +168,80 @@ function pushanswers() {
 		});
 		$("#questions").html(trivia[round].question);
 		$answercolumn.empty().append($answersdiv);
-
+		countdown();
 	
 
 		$(".answers").on('click', function(){
 			console.log(this);
+			stop();
 			
 			if ($(this).text() == trivia[round].ansarray[3]) {
-				$answercolumn.html("<h3>CORRECT! <br/><br/><img src=" + 
-					yesimgArray[round] + " width='100%'>");
-					right++;
-					console.log("right number " + right);
+				$answercolumn.html("<h3>CORRECT! <br/><img src=" + 
+					yesimgArray[round] + " height='80%'>");
+				right++;
+				console.log("right number " + right);
 
+				round++;
+				if (round == trivia.length) {
+					setTimeout(endScreen, 1000 * 5);	
+					}
+				else {
+				setTimeout(randomizearray, 1000 * 5);
+				}
 			}
 			else {
-				$answercolumn.html("<h3>The answer was " + 
-					trivia[round].ansarray[3] +" <br/><img src=" 
-					+ noimgArray[round] + " width='400px'>");
-					wrong++;
-					console.log("wrong number " + wrong);
+				 wrongAnswer();
+					// $answercolumn.html("<h3>The answer was " + 
+					// 	trivia[round].ansarray[3] +" <br/><img src=" 
+					// 	+ noimgArray[round] + " width='400px'>");
+					// 	wrong++;
+					// 	console.log("wrong number " + wrong);
+				// }				
 			}
-			round++;
-			setTimeout(randomizearray, 1000 * 5);
+
+
+
 		
 		
 	});
 
 	}
 
-	randomizearray();
+// function countdown() {
+//   intervalId = setInterval(timer, 1000);
+// }
+
+// function timer() {
+
+// 	//  Decrease number by one.
+// 	clock--;
+
+// 	//  Show the number in the #show-number tag.
+// 	$("#timeleft").html("<h2>" + clock + "</h2>");
+
+
+// 	//  Once number hits zero...
+// 	if (clock === 0) {
+
+// 	//  ...run the stop function.
+// 	stop();
+
+// 	clock = 10;
+
+// 	//  Alert the user that time is up.
+// 	wrongAnswer();
+// 	}
+// }
+
+// function wrongAnswer() {
+// 	$answercolumn.html("<h3>The answer was " + 
+// 					trivia[round].ansarray[3] +" <br/><img src=" 
+// 					+ noimgArray[round] + " width='400px'>");
+// 					wrong++;
+// 					console.log("wrong number " + wrong);
+// }
+
+	
 
 });
 
