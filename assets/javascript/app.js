@@ -127,7 +127,7 @@ function stop() {
 //gunction for wrong answers
 function wrongAnswer() {
 	//replaces answer choices with corresponding gif and correct answer
-		$("#answercolumn").html("<h3>The answer was " + 
+		$("#answercolumn").html("<h3>NO! The answer was " + 
 			trivia[round].ansarray[3] +" <br/><img src=" 
 			+ noimgArray[round] + " max-height='90%' max-width='100%'>");
 		wrong++; //adds to wrong count
