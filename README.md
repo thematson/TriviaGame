@@ -2,6 +2,7 @@
  a Trivia game using JavaScript for the logic and jQuery to manipulate HTML
  
 1. upon loading of DOM, start button/image appears
+
 	2. after start button is pressed, game begins
 		a. 1st question is given with a short countdown timer
 		b. If the player selects the correct answer, show a gif congratulating them for choosing 
