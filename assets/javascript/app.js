@@ -105,14 +105,12 @@ function endScreen() {
 		 						+ "And missed " + wrong + ". You let down Goose.<br/><br/>" 
 		 						+ "Click on Goose to play again!");
 	}
-	else {					//if user breaks 5 question this happens
+	else {					//if user is correct >= 5 question this happens
 		$("#overlayimg").attr('src', './assets/images/maverick.jpg')
 		$("#titletext").append("<h3>You got " + right + " correct!<br/><br/>"
 		 						+ "And missed " + wrong + ". Great job Maverick!<br/><br/>" 
 		 						+ "Click on Maverick to play again!");
 	}	
-	
-
 }
 
 function stop() {
@@ -126,129 +124,92 @@ function stop() {
 
     }
 
+//gunction for wrong answers
 function wrongAnswer() {
-					$("#answercolumn").html("<h3>The answer was " + 
-						trivia[round].ansarray[3] +" <br/><img src=" 
-						+ noimgArray[round] + " height='80%' max-width='100%'>");
-					wrong++;
-					console.log("wrong number " + wrong);
-					round++;
-					if (round == trivia.length) {
-					setTimeout(endScreen, 1000 * 5);	
-					}
-					else {
-					setTimeout(randomizearray, 1000 * 5);
-					}
-					
-				}				
+	//replaces answer choices with corresponding gif and correct answer
+		$("#answercolumn").html("<h3>The answer was " + 
+			trivia[round].ansarray[3] +" <br/><img src=" 
+			+ noimgArray[round] + " max-height='90%' max-width='100%'>");
+		wrong++; //adds to wrong count
+		round++; //adds to round count
+		//if round equals the number of trivia questions, game is over, call end function
+		if (round == trivia.length) {
+		setTimeout(endScreen, 1000 * 5);	
+		}
+		//if the round is not yet equal to trivia array, keep the game going
+		else {
+		setTimeout(randomizearray, 1000 * 5);
+		}					
+}				
 
+//function to fill an array with answers in a random order 
 function randomizearray() {
-		randarray = [];
-		while (randarray.length < 4){ 
+		randarray = []; //clears the random array
+		while (randarray.length < 4){ //feeds in random answers until the array has 4 elements
 		 	var rand = Math.floor(Math.random() * 4);
+		 	//picks a random answer from ansarray, if this answer is not already
+		 	// a part of the  random array, it pushes the answer into randarray
 		  	if (randarray.indexOf(trivia[round].ansarray[rand]) === -1) {
 		 	randarray.push(trivia[round].ansarray[rand]);
 		 		 	}
-		}
-		
-		pushanswers();
-
-	}
+		}		
+		pushanswers(); //calls push answers function
+}
 
 
 function pushanswers() {
-   
+		// declares a var for the answercolumn div   
 		var $answercolumn = $("#answercolumn");
+		// declares a var for a div with thte #answers attribute
 		var $answersdiv = $("<div>").attr('id', 'answers');
+		//goes through randarray and creates an h3 element with #ans[i]
+		//.answers class and text equal to the answer
 		randarray.forEach(function(answer, index) {
-			var $answer = $("<p>").attr('id', 'ans'+ (index + 1))
+			var $answer = $("<h3>").attr('id', 'ans'+ (index + 1))
 								  .addClass('answers')
 								  .text(answer);
+		//appends each h3 element to the #answers div
 			$answersdiv.append($answer);
 		});
+		//questions div gets html of the appropriate trivia question
 		$("#questions").html(trivia[round].question);
+		//clears the #answercolumn div and appends the #answer div that now
+		//has the multiple choice answers
 		$answercolumn.empty().append($answersdiv);
+		//calls countdown function to begin timer
 		countdown();
 	
-
+		//as user selects a multiple choice answer with the answers class
 		$(".answers").on('click', function(){
-			console.log(this);
+			//timer is stopped
 			stop();
-			
+			//if picked answer is equal to the elemnt with the index of 3 
+			//in the original answer array (ansarray[3] will always be the correct answer)
 			if ($(this).text() == trivia[round].ansarray[3]) {
+				//replace the html of #answercolumn with winning gif and text
 				$answercolumn.html("<h3>CORRECT! <br/><img src=" + 
-					yesimgArray[round] + " height='80%'>");
-				right++;
-				console.log("right number " + right);
-
-				round++;
-				if (round == trivia.length) {
-					setTimeout(endScreen, 1000 * 5);	
+					yesimgArray[round] + " max-height='90%' max-width='100%'>");
+				right++;//adds to the right total
+				round++;//adds to the round total
+				if (round == trivia.length) { //compares round number to array length
+					setTimeout(endScreen, 1000 * 5); //if equal go to end screen after 5 seconds	 
 					}
 				else {
-				setTimeout(randomizearray, 1000 * 5);
+				setTimeout(randomizearray, 1000 * 5); //if not play on after 5 seconds
 				}
 			}
-			else {
+			else { //call the wronganswer function if user guessed incorrectly
 				 wrongAnswer();
-					// $answercolumn.html("<h3>The answer was " + 
-					// 	trivia[round].ansarray[3] +" <br/><img src=" 
-					// 	+ noimgArray[round] + " width='400px'>");
-					// 	wrong++;
-					// 	console.log("wrong number " + wrong);
-				// }				
-			}
-
-
-
+			}	
 		
-		
-	});
-
+		});
 	}
-
-// function countdown() {
-//   intervalId = setInterval(timer, 1000);
-// }
-
-// function timer() {
-
-// 	//  Decrease number by one.
-// 	clock--;
-
-// 	//  Show the number in the #show-number tag.
-// 	$("#timeleft").html("<h2>" + clock + "</h2>");
-
-
-// 	//  Once number hits zero...
-// 	if (clock === 0) {
-
-// 	//  ...run the stop function.
-// 	stop();
-
-// 	clock = 10;
-
-// 	//  Alert the user that time is up.
-// 	wrongAnswer();
-// 	}
-// }
-
-// function wrongAnswer() {
-// 	$answercolumn.html("<h3>The answer was " + 
-// 					trivia[round].ansarray[3] +" <br/><img src=" 
-// 					+ noimgArray[round] + " width='400px'>");
-// 					wrong++;
-// 					console.log("wrong number " + wrong);
-// }
-
-	
-
 });
 
-/*  1. upon loading of DOM, start button appears
+/*  1. upon loading of DOM, start button/image appears
 	2. after start button is pressed, game begins
 		a. 1st question is given with a short countdown timer
-		b. If the player selects the correct answer, show a screen congratulating them for choosing 
+		b. If the player selects the correct answer, show a gif congratulating them for choosing 
 			the right option. After a few seconds, display the next question -- 
 			do this without user input.
 		c. The scenario is similar for wrong answers and time-outs.

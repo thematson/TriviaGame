@@ -3,6 +3,8 @@ body {
 	background-repeat: repeat-y;
 	background-size: 100%;
 	background-image-height: 100%;
+	font-family: 'Roboto', sans-serif;
+
 }
 
 #overlay {
@@ -80,7 +82,10 @@ body {
 
 #answersrow {
 	height: 50%;
+	vertical-align: middle;
+
 }
+
 
 #answers {
 	background-color: white;
@@ -103,6 +108,7 @@ body {
 	border-radius: 15px;
 	margin: 0;
 	background-color: lightgrey;
+	vertical-align: middle;
 
 }
 
@@ -114,5 +120,11 @@ body {
 	border-style: ridge;
 	background-color: lightgreen;
 
+}
+
+#answercolumn img {
+	height: 80%;
+	margin-left: 50%;
+	transform: translateX(-50%);
 }
 
