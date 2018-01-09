@@ -62,7 +62,7 @@ body {
 	height: 90%;
 	width: 90%;
 	opacity: 1;
-	max-width: 960px;
+	max-width: 960px !important;
 }
 
 #titletext {
